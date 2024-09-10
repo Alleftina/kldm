@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:15
+    container_name: info_about_book_api_db
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+
+  book:
+    build:
+      context: .
+    container_name: info_about_book_api
+    depends_on:
+      - db
+    ports:
+      - 7777:8000
+    networks:
+      - elk_network
+
+
+
+volumes:
+  elasticsearch_data:
+  postgres_data:
+
+
+
+networks:
+  elk_network:
+    external: true
+
